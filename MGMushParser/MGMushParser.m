@@ -10,10 +10,18 @@
 }
 
 + (NSAttributedString *)attributedStringFromMush:(NSString *)markdown
+                                      attributes:(NSDictionary *)attributes {
+    
+    return [self attributedStringFromMush:markdown font:attributes[NSFontAttributeName] boldFont:nil italicFont:nil color:attributes[NSForegroundColorAttributeName] paragraphStyle:nil attributes:attributes];
+    
+}
+
+
++ (NSAttributedString *)attributedStringFromMush:(NSString *)markdown
                                             font:(UIFont *)font
                                            color:(UIColor *)color {
     
-    return [self attributedStringFromMush:markdown font:font boldFont:nil italicFont:nil color:color paragraphStyle:nil];
+    return [self attributedStringFromMush:markdown font:font boldFont:nil italicFont:nil color:color paragraphStyle:nil attributes:nil];
 }
 
 + (NSAttributedString *)attributedStringFromMush:(NSString *)markdown
@@ -21,10 +29,24 @@
                                            color:(UIColor *)color
                                   paragraphStyle:(NSParagraphStyle *)paragraphStyle {
     
-    return [self attributedStringFromMush:markdown font:font boldFont:nil italicFont:nil color:color paragraphStyle:paragraphStyle];
+    return [self attributedStringFromMush:markdown font:font boldFont:nil italicFont:nil color:color paragraphStyle:paragraphStyle attributes:nil];
 }
 
-+ (NSAttributedString *)attributedStringFromMush:(NSString *)markdown font:(UIFont *)font boldFont:(UIFont *)boldFont italicFont:(UIFont *)italicFont color:(UIColor *)color paragraphStyle:(NSParagraphStyle *)paragraphStyle {
++ (NSAttributedString *)attributedStringFromMush:(NSString *)markdown
+                                            font:(UIFont *)font
+                                        boldFont:(UIFont *)boldFont
+                                      italicFont:(UIFont *)italicFont
+                                           color:(UIColor *)color
+                                  paragraphStyle:(NSParagraphStyle *)paragraphStyle {
+    
+    return [self attributedStringFromMush:markdown font:font boldFont:boldFont italicFont:italicFont color:color paragraphStyle:paragraphStyle attributes:nil];
+}
+
++ (NSAttributedString *)attributedStringFromMush:(NSString *)markdown
+                                            font:(UIFont *)font boldFont:(UIFont *)boldFont
+                                      italicFont:(UIFont *)italicFont color:(UIColor *)color
+                                  paragraphStyle:(NSParagraphStyle *)paragraphStyle
+                                      attributes:(NSDictionary *)attributes {
     
     MGMushParser *parser = [[MGMushParser alloc] init];
     parser.mush = markdown;
@@ -32,6 +54,7 @@
     parser.baseFont = font;
     parser.boldFont = boldFont;
     parser.italicFont = italicFont;
+    parser.attributes = attributes;
     parser.paragraphStyle = paragraphStyle;
     
     if ([UILabel instancesRespondToSelector:@selector(attributedText)]) {
@@ -45,7 +68,7 @@
 - (void)parse {
 
   // apply base colour and font
-  id base = @{
+    id base = (self.attributes)?self.attributes:@{
     NSForegroundColorAttributeName:self.baseColor,
     NSFontAttributeName:self.baseFont,
     NSParagraphStyleAttributeName:self.paragraphStyle ?: NSParagraphStyle.defaultParagraphStyle
