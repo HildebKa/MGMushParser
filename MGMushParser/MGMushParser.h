@@ -21,14 +21,23 @@ Use `MGMushParser` to create an `NSAttributedString` from an `NSString` with lig
 /** @name Create an NSAttributedString */
 
 /**
-* Takes an `NSString` and returns an appropriately attributed 
-* `NSAttributedString`.
-*
-* @param markdown An `NSString` containing text marked up with `Mush`
-* @param font The base font to use, from which bold and italic variants will be
-* derived
-* @param color The text colour to use for the resulting attributed string
-*/
+ * Takes an `NSString` and returns an appropriately attributed
+ * `NSAttributedString`.
+ *
+ * @param markdown An `NSString` containing text marked up with `Mush`
+ * @param attributes A dictionary of attribute objects. Need font and color
+ */
++ (NSAttributedString *)attributedStringFromMush:(NSString *)mush
+                                            attributes:(NSDictionary *)attributes;
+/**
+ * Takes an `NSString` and returns an appropriately attributed
+ * `NSAttributedString`.
+ *
+ * @param markdown An `NSString` containing text marked up with `Mush`
+ * @param font The base font to use, from which bold and italic variants will be
+ * derived
+ * @param color The text colour to use for the resulting attributed string
+ */
 + (NSAttributedString *)attributedStringFromMush:(NSString *)mush
                                             font:(UIFont *)font
                                            color:(UIColor *)color;
@@ -45,12 +54,21 @@ Use `MGMushParser` to create an `NSAttributedString` from an `NSString` with lig
                                            color:(UIColor *)color
                                   paragraphStyle:(NSParagraphStyle *)paragraphStyle;
 
++ (NSAttributedString *)attributedStringFromMush:(NSString *)markdown
+                                            font:(UIFont *)font
+                                        boldFont:(UIFont *)boldFont
+                                      italicFont:(UIFont *)italicFont
+                                           color:(UIColor *)color
+                                  paragraphStyle:(NSParagraphStyle *)paragraphStyle
+                                      attributes:(NSDictionary *)attributes;
+
 @property (nonatomic, copy) NSString *mush;
 @property (nonatomic, retain) UIFont *baseFont;
 @property (nonatomic, retain) UIFont *boldFont;
 @property (nonatomic, retain) UIFont *italicFont;
 @property (nonatomic, retain) UIColor *baseColor;
 @property (nonatomic, retain) NSParagraphStyle *paragraphStyle;
+@property (nonatomic, retain) NSDictionary *attributes;
 - (void)parse;
 - (void)strip;
 - (NSAttributedString *)attributedString;
